@@ -1,6 +1,6 @@
-# TextIndex - Fast & Scalable Text Indexing System
+# Blitz
 
-TextIndex is a high-performance file indexing system written in Go. It parses text files into fixed-size chunks, generates SimHash fingerprints for similarity matching, and builds an in-memory index for fast retrieval.
+Blitz is a high-performance file indexing system written in Go. It parses text files into fixed-size chunks, generates SimHash fingerprints for similarity matching, and builds an in-memory index for fast retrieval.
 
 ## Features
 
@@ -16,7 +16,7 @@ TextIndex is a high-performance file indexing system written in Go. It parses te
 
 ## Building the Application
 
-To build the TextIndex CLI tool:
+To build the Blitz CLI tool:
 
 ```bash
 make run or go build -o textindex .
@@ -32,7 +32,7 @@ make test
 
 ## Usage
 
-TextIndex provides two main commands: `index` and `lookup`.
+Blitz provides two main commands: `index` and `lookup`.
 
 ### Indexing a Text File
 
@@ -74,7 +74,7 @@ For testing purpose, the application outputs some hashes in `hashlog.txt`
 
 ## Working use case application
 
-The textindex, as noted in Example Application, can be used in quick search and checking for
+The blitz, as noted in Example Application, can be used in quick search and checking for
 content duplication. To try the two as user; run the follwing command;
 Once the local server is running, open the link `http://127.0.0.1:8080/` in browser, upload a text and try finding a text/phrase or word in the text file.
 

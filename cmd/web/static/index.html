@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Search</title>
+    <style>
+        /* Basic Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Body and general layout */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f7f7f7;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 80%;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: #4CAF50;
+        }
+
+        /* Form and input styling */
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        label {
+            text-align: left;
+            font-weight: bold;
+            color: #555;
+        }
+
+        textarea,
+        input[type="file"],
+        input[type="text"],
+        input[type="search"] {
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input[type="file"] {
+            background-color: #fafafa;
+        }
+
+        input[type="text"]:focus,
+        input[type="search"]:focus {
+            border-color: #4CAF50;
+            outline: none;
+        }
+
+        button {
+            padding: 12px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Results section */
+        #results {
+            margin-top: 20px;
+            display: none;
+            padding: 20px;
+            background-color: #f1f1f1;
+            border-radius: 5px;
+            text-align: left;
+        }
+
+        #searchResults {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            max-height: 300px;
+            overflow-y: auto;
+            font-family: monospace;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        /* Media Queries for responsiveness */
+        @media (max-width: 600px) {
+            .container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <p>
+        The example below demonstrates two use cases 
+        <ol style="list-style: none;">
+            <li>Content duplication</li>
+            <li>Quick search retrieval</li>
+        </ol>
+    </p>
+    <p>
+        Upload a file and try searching for a word/phrase or sentence.
+        The uploaded content is indexed in chumks based on the query text bytes sizes. 
+    </p>
+    <p>It returns the regions in the content where the content is found. If no match, the current implementation 
+        gives no output.</p>
+    <br>
+    <h1>File Upload and Search</h1>
+
+    <!-- File upload form -->
+    <form id="upload-form" enctype="multipart/form-data">
+        <div>
+            <label for="fileInput">Upload a file:</label>
+            <input type="file" id="fileInput" name="file" required>
+        </div>
+        <div>
+            <label for="searchInput">Search for text:</label>
+            <textarea rows="5" cols="90" id="searchInput" placeholder="Enter text to search" required></textarea>
+        </div>
+        <button type="submit">Upload & Search</button>
+    </form>
+
+    <div id="results">
+        <h2>Search Results:</h2>
+        <pre id="searchResults"></pre>
+    </div>
+</div>
+
+<script>
+document.getElementById('upload-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    let fileInput = document.getElementById('fileInput');
+    let searchInput = document.getElementById('searchInput').value;
+    
+    if (!fileInput.files[0] || !searchInput) {
+        alert("Please provide both a file and a search term.");
+        return;
+    }
+
+    let formData = new FormData();
+    formData.append('file', fileInput.files[0]);
+    formData.append('searchText', searchInput);
+
+    // Send the file and search text to the server using fetch
+    fetch('/search', {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+        let resultsDiv = document.getElementById('searchResults');
+        let resultsContainer = document.getElementById('results');
+        
+        if (data.error) {
+            resultsDiv.textContent = data.error;
+        } else {
+            resultsDiv.textContent = data;
+        }
+
+        // Show the results section
+        resultsContainer.style.display = 'block';
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+});
+</script>
+
+</body>
+</html>

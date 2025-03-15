@@ -1,0 +1,41 @@
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+
+# Test binary, built with `go test -c`
+*.test
+*.idx
+*.index
+
+# Output of the go coverage tool
+*.out
+coverage.out
+
+# Dependency directories (if you accidentally vendor them)
+vendor/
+cmd/cli/tesdata
+
+# Go workspace file
+go.work
+
+# Temporary files
+*.tmp
+*.swp
+
+# Build artifacts and logs specific to your project
+hashlogs.txt
+index.idx
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Editor/IDE files
+*.idea/
+*.vscode/
+*.sublime-project
+*.sublime-workspace
+
